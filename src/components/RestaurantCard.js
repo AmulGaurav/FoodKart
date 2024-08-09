@@ -1,5 +1,5 @@
 const RestaurantCard = ({ resData }) => {
-  const { name, avgRating, cuisines, costForTwo, deliveryTime } = resData?.data;
+  const { name, avgRating, cuisines, costForTwo, sla } = resData?.info;
 
   return (
     <div className="res-card">
@@ -12,8 +12,8 @@ const RestaurantCard = ({ resData }) => {
       <h4>{cuisines.join(", ")}</h4>
       <h4>{avgRating} stars</h4>
       <h4>38 minutes</h4>
-      <h4>₹{costForTwo / 100} FOR TWO</h4>
-      <h4>{deliveryTime} minutes</h4>
+      <h4>{costForTwo}</h4>
+      <h4>{sla.deliveryTime} minutes</h4>
     </div>
   );
 };

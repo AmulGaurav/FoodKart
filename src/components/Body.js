@@ -1,40 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 
 const Body = () => {
-  const [listOfRestaurants, setListOfRestaurants] = useState([
-    {
-      data: {
-        id: "334475",
-        name: "KFC",
-        cuisines: ["Burgers", "Biryani", "American", "Snacks", "Fast Food"],
-        costForTwo: 40000,
-        deliveryTime: 36,
-        avgRating: "3.8",
-      },
-    },
+  const [listOfRestaurants, setListOfRestaurants] = useState([]);
 
-    {
-      data: {
-        id: "334480",
-        name: "Dominos",
-        cuisines: ["Burgers", "Biryani", "American", "Snacks", "Fast Food"],
-        costForTwo: 40000,
-        deliveryTime: 36,
-        avgRating: "4.5",
-      },
-    },
-    {
-      data: {
-        id: "334481",
-        name: "McDonalds",
-        cuisines: ["Burgers", "Biryani", "American", "Snacks", "Fast Food"],
-        costForTwo: 40000,
-        deliveryTime: 36,
-        avgRating: "4.1",
-      },
-    },
-  ]);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=21.99740&lng=79.00110&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    );
+    const json = await data.json();
+    // console.log(
+    //   json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
+    // );
+    setListOfRestaurants(
+      json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
+    );
+  };
 
   return (
     <div className="body">
@@ -55,7 +40,7 @@ const Body = () => {
 
       <div className="res-container">
         {listOfRestaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
         ))}
       </div>
     </div>
