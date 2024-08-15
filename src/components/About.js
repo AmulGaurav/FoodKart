@@ -1,8 +1,10 @@
+import User from "./User";
+
 const About = () => {
   return (
     <div>
-      <h1>About Section</h1>
-      <h2>This is the About section of the website</h2>
+      <h1>About Us</h1>
+      <User username={"AmulGaurav"} />
     </div>
   );
 };
