@@ -2,42 +2,104 @@ import { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import OnlineStatus from "./OnlineStatus";
+import { Menu, X } from "lucide-react";
 
 const Header = () => {
   const [btnText, setBtnText] = useState("Login");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const onlineStatus = useOnlineStatus();
 
   return (
-    <div className="flex justify-between h-[75px] bg-black text-white bg-opacity-85 shadow-lg px-2">
-      <div className="ml-2 py-1 px-2 rounded-r-xl">
-        <img className="w-48" src={logo} />
+    <nav className="bg-blue-50 shadow-md">
+      <div className="max-w-full mx-6">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex-shrink-0 cursor-pointer">
+            <Link to={"/"}>
+              <img className="h-8 w-auto brightness-0" src={logo} alt="Logo" />
+            </Link>
+          </div>
+
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/about">About Us</NavLink>
+              <NavLink to="/contact">Contact Us</NavLink>
+              <NavLink to="/cart">Cart</NavLink>
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-4">
+            <OnlineStatus status={onlineStatus} />
+            <LoginButton btnText={btnText} setBtnText={setBtnText} />
+          </div>
+
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-900 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            >
+              <span className="sr-only">Open main menu</span>
+              {isMenuOpen ? (
+                <X className="block h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="block h-6 w-6" aria-hidden="true" />
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="flex items-center m-4">
-        <ul className="flex p-4 gap-8">
-          <li>Online Status: {onlineStatus ? "🟢" : "🔴"}</li>
-          <li>
-            <Link to={"/"}>Home</Link>
-          </li>
-          <li>
-            <Link to={"/about"}>About Us</Link>
-          </li>
-          <li>
-            <Link to={"/contact"}>Contact Us</Link>
-          </li>
-          <li>Cart</li>
+      {/* Mobile menu, show/hide based on menu state */}
+      {isMenuOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <NavLink to="/" mobile>
+              Home
+            </NavLink>
+            <NavLink to="/about" mobile>
+              About Us
+            </NavLink>
+            <NavLink to="/contact" mobile>
+              Contact Us
+            </NavLink>
+            <NavLink to="/cart" mobile>
+              Cart
+            </NavLink>
+          </div>
 
-          <button
-            onClick={() => {
-              btnText == "Login" ? setBtnText("Logout") : setBtnText("Login");
-            }}
-          >
-            {btnText}
-          </button>
-        </ul>
-      </div>
-    </div>
+          <div className="py-2 border-t border-gray-200">
+            <div className="flex justify-between items-center px-5">
+              <LoginButton btnText={btnText} setBtnText={setBtnText} mobile />
+              <OnlineStatus status={onlineStatus} />
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 };
+
+const NavLink = ({ children, to, mobile }) => (
+  <Link
+    to={to}
+    className={`${
+      mobile ? "block text-base" : "text-gray-700 text-sm"
+    } text-blue-800 px-3 py-2 font-extrabold hover:bg-blue-100 hover:text-blue-900 rounded-xl`}
+  >
+    {children}
+  </Link>
+);
+
+const LoginButton = ({ btnText, setBtnText, mobile }) => (
+  <button
+    onClick={() => setBtnText(btnText === "Login" ? "Logout" : "Login")}
+    className={`${
+      mobile ? "-ml-2 text-base" : "min-w-20 text-sm"
+    } px-3 py-2 font-medium text-blue-700 hover:bg-blue-100 hover:text-blue-900 rounded-lg`}
+  >
+    {btnText}
+  </button>
+);
 
 export default Header;

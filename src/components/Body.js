@@ -41,7 +41,7 @@ const Body = () => {
   ) : (
     <div>
       <div className="flex">
-        <div className="p-4 m-4">
+        <div className="p-4 mx-12 my-4">
           <input
             type="text"
             className="border border-solid border-black rounded-md"

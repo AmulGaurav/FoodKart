@@ -7,13 +7,11 @@ const RestaurantCategory = ({ data }) => {
 
   const handleClick = () => setShowItems(!showItems);
 
-  // console.log(data);
-
   return (
     <div>
       <div
         className={`w-7/12 sm:w-8/12 lg:w-7/12 xl:w-6/12 mx-auto my-4 pt-5 ${
-          data?.itemCards ? "pb-4" : "pb-[0.1px] rounded-b-lg"
+          data?.itemCards ? "pb-4" : "rounded-b-lg"
         } bg-gray-50 shadow-xl border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 ${
           data.itemCards && "hover:bg-gray-100"
         }`}
@@ -30,24 +28,24 @@ const RestaurantCategory = ({ data }) => {
           {data?.itemCards && <DownArrowSvg />}
         </div>
 
-        {data.categories
-          ? showItems && (
-              <div className="w-full pt-4">
-                {data?.categories?.map((category, index) => (
-                  <div
-                    key={index}
-                    className="mb-2 p-4 shadow-lg border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100"
-                  >
-                    <Category category={category} />
-                  </div>
-                ))}
+        {data.categories ? (
+          <div className="w-full pt-4">
+            {data?.categories?.map((category, index) => (
+              <div
+                key={index}
+                className="mb-2 p-4 shadow-lg border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100"
+              >
+                <Category category={category} />
               </div>
-            )
-          : showItems && (
-              <div className="px-2">
-                <ItemList items={data?.itemCards} />
-              </div>
-            )}
+            ))}
+          </div>
+        ) : (
+          showItems && (
+            <div className="px-2">
+              <ItemList items={data?.itemCards} />
+            </div>
+          )
+        )}
       </div>
     </div>
   );
