@@ -36,11 +36,11 @@ const Body = () => {
       </h1>
     );
 
-  return filteredRestaurant.length === 0 ? (
+  return filteredRestaurant?.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="body">
-      <div className="filter flex">
+    <div>
+      <div className="flex">
         <div className="p-4 m-4">
           <input
             type="text"
@@ -81,7 +81,7 @@ const Body = () => {
       </div>
 
       <div className="flex flex-wrap justify-center gap-8">
-        {filteredRestaurant.map((restaurant) => (
+        {filteredRestaurant?.map((restaurant) => (
           <Link
             key={restaurant.info.id}
             to={"/restaurants/" + restaurant.info.id}
