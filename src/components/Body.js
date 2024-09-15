@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import { RESTAURANTS_API } from "../utils/constants";
@@ -40,8 +40,8 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div>
-      <div className="flex">
-        <div className="p-4 mx-12 my-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center lg:mx-10 mt-4 mb-8">
+        <div className="px-4 my-1">
           <input
             type="text"
             className="border border-solid border-black rounded-md"
@@ -51,7 +51,7 @@ const Body = () => {
             }}
           />
           <button
-            className="m-4 py-1 px-4 bg-green-300 hover:bg-green-200 cursor-pointer rounded-lg transition duration-300"
+            className="mx-4 my-2 py-1 px-4 bg-green-300 hover:bg-green-200 cursor-pointer rounded-lg transition duration-300"
             onClick={() => {
               const filteredList = listOfRestaurants.filter((res) =>
                 res.info?.name.toLowerCase().includes(searchText.toLowerCase())
@@ -64,7 +64,7 @@ const Body = () => {
           </button>
         </div>
 
-        <div className="p-4 m-4 flex items-center">
+        <div className="px-4 my-1">
           <button
             className="px-4 py-2 bg-gray-100 rounded-lg"
             onClick={() => {

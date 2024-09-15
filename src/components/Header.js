@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import OnlineStatus from "./OnlineStatus";
 import { Menu, X } from "lucide-react";
+import UserContext from "../utils/Contexts";
 
 const Header = () => {
   const [btnText, setBtnText] = useState("Login");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const onlineStatus = useOnlineStatus();
+  const { isLoggedIn, loggedInUser } = useContext(UserContext);
 
   return (
     <nav className="bg-blue-50 shadow-md">
@@ -21,7 +23,7 @@ const Header = () => {
           </div>
 
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="lg:ml-20 flex items-baseline space-x-2 lg:space-x-4">
               <NavLink to="/">Home</NavLink>
               <NavLink to="/about">About Us</NavLink>
               <NavLink to="/contact">Contact Us</NavLink>
@@ -29,9 +31,10 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-4">
             <OnlineStatus status={onlineStatus} />
             <LoginButton btnText={btnText} setBtnText={setBtnText} />
+            <div className="font-medium">{isLoggedIn && loggedInUser}</div>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -70,7 +73,10 @@ const Header = () => {
 
           <div className="py-2 border-t border-gray-200">
             <div className="flex justify-between items-center px-5">
-              <LoginButton btnText={btnText} setBtnText={setBtnText} mobile />
+              <div className="flex items-center space-x-4">
+                <LoginButton btnText={btnText} setBtnText={setBtnText} mobile />
+                <div className="font-bold">{isLoggedIn && loggedInUser}</div>
+              </div>
               <OnlineStatus status={onlineStatus} />
             </div>
           </div>
@@ -91,15 +97,22 @@ const NavLink = ({ children, to, mobile }) => (
   </Link>
 );
 
-const LoginButton = ({ btnText, setBtnText, mobile }) => (
-  <button
-    onClick={() => setBtnText(btnText === "Login" ? "Logout" : "Login")}
-    className={`${
-      mobile ? "-ml-2 text-base" : "min-w-20 text-sm"
-    } px-3 py-2 font-medium text-blue-700 hover:bg-blue-100 hover:text-blue-900 rounded-lg`}
-  >
-    {btnText}
-  </button>
-);
+const LoginButton = ({ btnText, setBtnText, mobile }) => {
+  const { isLoggedIn, loggedInUser, setUserInfo } = useContext(UserContext);
+
+  return (
+    <button
+      onClick={() => {
+        setBtnText(btnText === "Login" ? "Logout" : "Login");
+        setUserInfo({ isLoggedIn: !isLoggedIn, loggedInUser: loggedInUser });
+      }}
+      className={`${
+        mobile ? "-ml-2 text-base" : "min-w-20 text-sm"
+      } px-3 py-2 font-medium text-blue-700 hover:bg-blue-100 hover:text-blue-900 rounded-lg`}
+    >
+      {btnText}
+    </button>
+  );
+};
 
 export default Header;

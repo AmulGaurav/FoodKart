@@ -2,10 +2,8 @@ import { useState } from "react";
 import ItemList from "./ItemList";
 import DownArrowSvg from "./DownArrowSvg";
 
-const RestaurantCategory = ({ data }) => {
-  const [showItems, setShowItems] = useState(true);
-
-  const handleClick = () => setShowItems(!showItems);
+const RestaurantCategory = ({ data, showItems, setShowIndex }) => {
+  const handleClick = () => setShowIndex();
 
   return (
     <div>
