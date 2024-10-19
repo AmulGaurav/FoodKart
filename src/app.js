@@ -7,27 +7,13 @@ import RestaurantMenu from "./components/RestaurantMenu";
 const About = lazy(() => import("./components/About"));
 const Contact = lazy(() => import("./components/Contact"));
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import UserContext from "./utils/Contexts";
 
 const AppLayout = () => {
-  const [userInfo, setUserInfo] = useState({
-    isLoggedIn: false,
-    loggedInUser: "Default User",
-  });
-
   return (
-    <UserContext.Provider
-      value={{
-        isLoggedIn: userInfo.isLoggedIn,
-        loggedInUser: userInfo.loggedInUser,
-        setUserInfo,
-      }}
-    >
-      <div className="app">
-        <Header />
-        <Outlet />
-      </div>
-    </UserContext.Provider>
+    <div className="app">
+      <Header />
+      <Outlet />
+    </div>
   );
 };
 
@@ -57,7 +43,7 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/restaurants/:resId",
+        path: "/restaurants/:resName/:resImg",
         element: <RestaurantMenu />,
       },
     ],

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import { RESTAURANTS_API } from "../utils/constants";
@@ -19,9 +19,7 @@ const Body = () => {
   const fetchData = async () => {
     const data = await fetch(RESTAURANTS_API);
     const json = await data.json();
-    const restaurantsList =
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants;
+    const restaurantsList = json?.meals;
 
     setListOfRestaurants(restaurantsList);
     setFilteredRestaurant(restaurantsList);
@@ -54,7 +52,7 @@ const Body = () => {
             className="mx-4 my-2 py-1 px-4 bg-green-300 hover:bg-green-200 cursor-pointer rounded-lg transition duration-300"
             onClick={() => {
               const filteredList = listOfRestaurants.filter((res) =>
-                res.info?.name.toLowerCase().includes(searchText.toLowerCase())
+                res.strMeal.toLowerCase().includes(searchText.toLowerCase())
               );
 
               setFilteredRestaurant(filteredList);
@@ -65,16 +63,7 @@ const Body = () => {
         </div>
 
         <div className="px-4 my-1">
-          <button
-            className="px-4 py-2 bg-gray-100 rounded-lg"
-            onClick={() => {
-              const filteredList = listOfRestaurants.filter(
-                (res) => res.info?.avgRating >= 4
-              );
-
-              setFilteredRestaurant(filteredList);
-            }}
-          >
+          <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
             Top Rated Restaurants
           </button>
         </div>
@@ -83,10 +72,15 @@ const Body = () => {
       <div className="flex flex-wrap justify-center gap-8">
         {filteredRestaurant?.map((restaurant) => (
           <Link
-            key={restaurant.info.id}
-            to={"/restaurants/" + restaurant.info.id}
+            key={restaurant.idMeal}
+            to={
+              "/restaurants/" +
+              restaurant.strMeal +
+              "/" +
+              restaurant.strMealThumb.split("/")[6].split(".")[0]
+            }
           >
-            {restaurant.info.id % 4 ? (
+            {Math.floor(Math.random() * 5) % 4 ? (
               <RestaurantCard resData={restaurant} />
             ) : (
               <RestaurantCardPromoted resData={restaurant} />

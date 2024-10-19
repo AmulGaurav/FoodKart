@@ -1,45 +1,27 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
-import Shimmer from "./Shimmer";
-import useRestaurantMenu from "../utils/useRestaurantMenu";
-import RestaurantCategory from "./RestaurantCategory";
+import ItemList from "./ItemList";
+import { restaurants } from "../data/restaurantData";
 
 const RestaurantMenu = () => {
-  const { resId } = useParams();
-  const resInfo = useRestaurantMenu(resId);
-  const [showIndex, setShowIndex] = useState(0);
+  const { resName, resImg } = useParams();
 
-  if (resInfo === null) return <Shimmer />;
-
-  const { name, costForTwoMessage, cuisines } =
-    resInfo?.cards[2]?.card?.card?.info;
-
-  const categories =
-    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter((c) => {
-      const categoryType = c?.card?.card?.["@type"];
-      return (
-        categoryType ===
-          "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory" ||
-        categoryType ===
-          "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory"
-      );
-    });
+  const randomIndex = Math.floor(Math.random() * 8);
+  const { cuisines, costForTwo } = restaurants[randomIndex];
 
   return (
     <div className="text-center">
-      <h1 className="font-bold text-2xl my-6">{name}</h1>
+      <h1 className="font-bold text-2xl my-6">{resName}</h1>
       <p className="font-bold text-lg">
-        {cuisines.join(", ")} - {costForTwoMessage}
+        {cuisines.join(", ")} - {costForTwo}
       </p>
 
-      {categories.map((category, index) => (
-        <RestaurantCategory
-          key={index}
-          data={category?.card?.card}
-          showItems={index === showIndex ? true : false}
-          setShowIndex={() => setShowIndex(index)}
-        />
-      ))}
+      <div
+        className={
+          "w-7/12 sm:w-8/12 lg:w-7/12 xl:w-6/12 mx-auto my-4 pt-5 pb-4 bg-gray-50 shadow-xl border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 hover:bg-gray-100"
+        }
+      >
+        <ItemList resName={resName} resImg={resImg} />
+      </div>
     </div>
   );
 };

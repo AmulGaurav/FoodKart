@@ -1,16 +1,18 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import OnlineStatus from "./OnlineStatus";
 import { Menu, X } from "lucide-react";
-import UserContext from "../utils/Contexts";
 
 const Header = () => {
   const [btnText, setBtnText] = useState("Login");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const onlineStatus = useOnlineStatus();
-  const { isLoggedIn, loggedInUser } = useContext(UserContext);
+  const [userInfo, setUserInfo] = useState({
+    isLoggedIn: false,
+    loggedInUser: "Default User",
+  });
 
   return (
     <nav className="bg-blue-50 shadow-md">
@@ -33,8 +35,14 @@ const Header = () => {
 
           <div className="hidden md:flex items-center space-x-1 lg:space-x-4">
             <OnlineStatus status={onlineStatus} />
-            <LoginButton btnText={btnText} setBtnText={setBtnText} />
-            <div className="font-medium">{isLoggedIn && loggedInUser}</div>
+            <LoginButton
+              setUserInfo={setUserInfo}
+              btnText={btnText}
+              setBtnText={setBtnText}
+            />
+            <div className="font-medium">
+              {userInfo.isLoggedIn && userInfo.loggedInUser}
+            </div>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -74,8 +82,15 @@ const Header = () => {
           <div className="py-2 border-t border-gray-200">
             <div className="flex justify-between items-center px-5">
               <div className="flex items-center space-x-4">
-                <LoginButton btnText={btnText} setBtnText={setBtnText} mobile />
-                <div className="font-bold">{isLoggedIn && loggedInUser}</div>
+                <LoginButton
+                  setUserInfo={setUserInfo}
+                  btnText={btnText}
+                  setBtnText={setBtnText}
+                  mobile
+                />
+                <div className="font-bold">
+                  {userInfo.isLoggedIn && userInfo.loggedInUser}
+                </div>
               </div>
               <OnlineStatus status={onlineStatus} />
             </div>
@@ -97,14 +112,17 @@ const NavLink = ({ children, to, mobile }) => (
   </Link>
 );
 
-const LoginButton = ({ btnText, setBtnText, mobile }) => {
-  const { isLoggedIn, loggedInUser, setUserInfo } = useContext(UserContext);
-
+const LoginButton = ({ setUserInfo, btnText, setBtnText, mobile }) => {
   return (
     <button
       onClick={() => {
         setBtnText(btnText === "Login" ? "Logout" : "Login");
-        setUserInfo({ isLoggedIn: !isLoggedIn, loggedInUser: loggedInUser });
+        setUserInfo((userInfo) => {
+          return {
+            isLoggedIn: !userInfo.isLoggedIn,
+            loggedInUser: userInfo.loggedInUser,
+          };
+        });
       }}
       className={`${
         mobile ? "-ml-2 text-base" : "min-w-20 text-sm"
