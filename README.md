@@ -55,10 +55,3 @@ To run the project locally:
    ```
 
 3. Open your web browser and go to http://localhost:1234/ to view the project.
-
-### Handling CORS Issues
-
-If you encounter CORS errors, you can use the following browser extensions to bypass them:
-
-- **Firefox:** [Allow CORS: Access-Control-Allow-Origin](https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search)
-- **Chrome:** [Allow CORS: Access-Control-Allow-Origin](https://chromewebstore.google.com/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en-GB&utm_source=ext_sidebar)
