@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import OnlineStatus from "./OnlineStatus";
 import { Menu, X } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [btnText, setBtnText] = useState("Login");
@@ -13,6 +14,9 @@ const Header = () => {
     isLoggedIn: false,
     loggedInUser: "Default User",
   });
+
+  const cartItems = useSelector((store) => store.cart.items);
+  console.log(cartItems);
 
   return (
     <nav className="bg-blue-50 shadow-md">
@@ -29,7 +33,7 @@ const Header = () => {
               <NavLink to="/">Home</NavLink>
               <NavLink to="/about">About Us</NavLink>
               <NavLink to="/contact">Contact Us</NavLink>
-              <NavLink to="/cart">Cart</NavLink>
+              <NavLink to="/cart">Cart ({cartItems.length} items)</NavLink>
             </div>
           </div>
 
@@ -75,7 +79,7 @@ const Header = () => {
               Contact Us
             </NavLink>
             <NavLink to="/cart" mobile>
-              Cart
+              Cart ({cartItems.length} items)
             </NavLink>
           </div>
 

@@ -20,7 +20,18 @@ const RestaurantMenu = () => {
           "w-7/12 sm:w-8/12 lg:w-7/12 xl:w-6/12 mx-auto my-4 pt-5 pb-4 bg-gray-50 shadow-xl border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 hover:bg-gray-100"
         }
       >
-        <ItemList resName={resName} resImg={resImg} />
+        <ItemList
+          items={[
+            { resName, resImg },
+            { resName, resImg },
+            { resName, resImg },
+            { resName, resImg },
+            { resName, resImg },
+            { resName, resImg },
+            { resName, resImg },
+            { resName, resImg },
+          ]}
+        />
       </div>
     </div>
   );
